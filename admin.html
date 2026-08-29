@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Admin — Ibrahim Career Page</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: { extend: { fontFamily: { sans: ['Inter','system-ui','sans-serif'], cairo: ['Cairo','sans-serif'] } } }
+  };
+</script>
+<script src="https://unpkg.com/vue@3.4.31/dist/vue.global.prod.js"></script>
+<style>
+  html, body { font-family: 'Inter', system-ui, sans-serif; background:#f5f6fb; }
+  .font-cairo { font-family: 'Cairo', sans-serif; }
+  [v-cloak] { display: none !important; }
+  textarea { min-height: 4.5rem; }
+  input, textarea { outline: none; }
+  input:focus, textarea:focus { border-color:#4f46e5; }
+  .inp { width:100%; border:2px solid #e5e7eb; border-radius:0.75rem; padding:0.5rem 0.75rem; font-size:0.875rem; transition: border-color .15s ease; }
+</style>
+</head>
+<body class="min-h-screen text-gray-900 antialiased pb-28">
+
+<div id="app" v-cloak class="max-w-3xl mx-auto p-4 sm:p-6">
+
+  <!-- ============ LOCKED SCREEN ============ -->
+  <div v-if="!unlocked" class="min-h-[80vh] flex items-center justify-center">
+    <div class="w-full max-w-sm bg-white rounded-3xl shadow-xl border border-gray-100 p-7">
+      <h1 class="text-lg font-extrabold">Content Admin</h1>
+      <p class="text-sm text-gray-500 mt-1">Enter the admin secret to load and edit the live page content.</p>
+
+      <label class="block text-xs font-semibold text-gray-500 mt-5 mb-1">Admin secret</label>
+      <input v-model="secret" type="password" placeholder="Your ADMIN_SECRET"
+             class="w-full rounded-xl border-2 border-gray-200 px-3.5 py-2.5 text-sm" @keyup.enter="unlock" />
+
+      <button @click="unlock" :disabled="loading"
+              class="mt-4 w-full rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition text-white py-2.5 font-semibold text-sm">
+        {{ loading ? 'Loading…' : 'Unlock' }}
+      </button>
+      <p v-if="error" class="text-xs text-rose-600 mt-3">{{ error }}</p>
+      <p class="text-[11px] text-gray-400 mt-4 leading-relaxed">
+        The secret is only checked for real when you press Save — this screen just loads the current
+        content so you have something to edit. It's kept in this browser tab only (sessionStorage),
+        never saved to disk.
+      </p>
+    </div>
+  </div>
+
+  <!-- ============ EDIT SCREEN ============ -->
+  <div v-else>
+    <div class="flex items-center justify-between mb-5 pt-2">
+      <h1 class="text-xl font-extrabold">Content Admin</h1>
+      <a href="index.html" target="_blank" class="text-sm font-semibold text-indigo-600 hover:underline">View live site ↗</a>
+    </div>
+
+    <!-- Greeting -->
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+      <h2 class="font-bold mb-3">Greeting Screen</h2>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <field label="Title (EN)"><input v-model="content.greeting.en_title" class="inp" /></field>
+        <field label="Title (AR)"><input v-model="content.greeting.ar_title" dir="rtl" class="inp font-cairo" /></field>
+        <field label="Subtitle (EN)"><input v-model="content.greeting.en_subtitle" class="inp" /></field>
+        <field label="Subtitle (AR)"><input v-model="content.greeting.ar_subtitle" dir="rtl" class="inp font-cairo" /></field>
+        <field label="'Yes' button (EN)"><input v-model="content.greeting.en_yes" class="inp" /></field>
+        <field label="'Yes' button (AR)"><input v-model="content.greeting.ar_yes" dir="rtl" class="inp font-cairo" /></field>
+        <field label="'No' button (EN)"><input v-model="content.greeting.en_no" class="inp" /></field>
+        <field label="'No' button (AR)"><input v-model="content.greeting.ar_no" dir="rtl" class="inp font-cairo" /></field>
+      </div>
+    </section>
+
+    <!-- No-screen -->
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+      <h2 class="font-bold mb-3">"No Vacancy" Screen</h2>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <field label="Message (EN)"><textarea v-model="content.noScreen.en_message" class="inp"></textarea></field>
+        <field label="Message (AR)"><textarea v-model="content.noScreen.ar_message" dir="rtl" class="inp font-cairo"></textarea></field>
+      </div>
+    </section>
+
+    <!-- Profile / About -->
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+      <h2 class="font-bold mb-3">Profile &amp; About</h2>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <field label="Full name" class="sm:col-span-2"><input v-model="content.profile.name" class="inp" /></field>
+        <field label="Title (EN)"><input v-model="content.profile.en_title" class="inp" /></field>
+        <field label="Title (AR) — optional"><input v-model="content.profile.ar_title" dir="rtl" class="inp font-cairo" /></field>
+        <field label="Subtitle (EN)"><input v-model="content.profile.en_subtitle" class="inp" /></field>
+        <field label="Subtitle (AR) — optional"><input v-model="content.profile.ar_subtitle" dir="rtl" class="inp font-cairo" /></field>
+        <field label="Status badge (EN)"><input v-model="content.profile.en_badge" class="inp" /></field>
+        <field label="Status badge (AR) — optional"><input v-model="content.profile.ar_badge" dir="rtl" class="inp font-cairo" /></field>
+        <field label="About (EN)" class="sm:col-span-2"><textarea v-model="content.profile.en_about" class="inp" rows="4"></textarea></field>
+        <field label="About (AR)" class="sm:col-span-2"><textarea v-model="content.profile.ar_about" dir="rtl" class="inp font-cairo" rows="4"></textarea></field>
+      </div>
+    </section>
+
+    <!-- Areas of Focus -->
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-bold">Areas of Focus</h2>
+        <button @click="addFocusArea" class="text-xs font-semibold text-indigo-600 hover:underline">+ Add area</button>
+      </div>
+      <div v-for="(f, i) in content.focusAreas" :key="i" class="border border-gray-100 rounded-xl p-3.5 mb-3">
+        <div class="grid sm:grid-cols-2 gap-3">
+          <field label="Icon (emoji)"><input v-model="f.icon" class="inp" /></field>
+          <div></div>
+          <field label="Title (EN)"><input v-model="f.en_title" class="inp" /></field>
+          <field label="Title (AR)"><input v-model="f.ar_title" dir="rtl" class="inp font-cairo" /></field>
+          <field label="Description (EN)"><input v-model="f.en_desc" class="inp" /></field>
+          <field label="Description (AR)"><input v-model="f.ar_desc" dir="rtl" class="inp font-cairo" /></field>
+        </div>
+        <button @click="content.focusAreas.splice(i,1)" class="text-xs font-semibold text-rose-500 hover:underline mt-2">Remove</button>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-bold">Skills</h2>
+        <button @click="content.skills.push({en:'',ar:''})" class="text-xs font-semibold text-indigo-600 hover:underline">+ Add skill</button>
+      </div>
+      <div v-for="(s, i) in content.skills" :key="i" class="grid sm:grid-cols-2 gap-3 mb-2 items-center">
+        <input v-model="s.en" placeholder="English" class="inp" />
+        <div class="flex gap-2">
+          <input v-model="s.ar" dir="rtl" placeholder="Arabic — optional" class="inp font-cairo" />
+          <button @click="content.skills.splice(i,1)" class="text-rose-500 text-sm px-2" title="Remove">✕</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+      <h2 class="font-bold mb-3">Education</h2>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <field label="Text (EN)"><input v-model="content.education.en_text" class="inp" /></field>
+        <field label="Text (AR)"><input v-model="content.education.ar_text" dir="rtl" class="inp font-cairo" /></field>
+      </div>
+    </section>
+
+    <!-- Role options (resume picker) -->
+    <section class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 mb-4">
+      <h2 class="font-bold mb-1">Resume Role Cards</h2>
+      <p class="text-xs text-gray-400 mb-3">Tied to the 3 resume PDFs in <code>/resumes</code> — you can edit the text but not add/remove cards here.</p>
+      <div v-for="opt in content.roleOptions" :key="opt.value" class="border border-gray-100 rounded-xl p-3.5 mb-3">
+        <p class="text-[11px] font-semibold text-gray-400 uppercase mb-2">{{ opt.value }}</p>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <field label="Icon (emoji)"><input v-model="opt.icon" class="inp" /></field>
+          <div></div>
+          <field label="Title (EN)"><input v-model="opt.en_title" class="inp" /></field>
+          <field label="Title (AR)"><input v-model="opt.ar_title" dir="rtl" class="inp font-cairo" /></field>
+          <field label="Description (EN)"><input v-model="opt.en_desc" class="inp" /></field>
+          <field label="Description (AR)"><input v-model="opt.ar_desc" dir="rtl" class="inp font-cairo" /></field>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ STICKY SAVE BAR ============ -->
+  <div v-if="unlocked" class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3.5 flex items-center justify-center gap-2.5 flex-wrap z-40">
+    <button @click="reload" :disabled="saving" class="rounded-xl bg-gray-100 hover:bg-gray-200 transition text-gray-700 py-2.5 px-4 font-semibold text-sm">Reload from server</button>
+    <button @click="save" :disabled="saving" class="rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition text-white py-2.5 px-5 font-bold text-sm">
+      {{ saving ? 'Saving…' : '💾 Save changes' }}
+    </button>
+    <span v-if="status" class="text-xs font-medium" :class="statusOk ? 'text-emerald-600' : 'text-rose-600'">{{ status }}</span>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // Paste the same Google Apps Script Web App URL you put in index.html's CONFIG.backendUrl.
+  const CONFIG = { backendUrl: "" };
+
+  // Used only to pre-fill the form if the backend can't be reached yet.
+  const DEFAULT_CONTENT = {
+    greeting: {
+      en_title: "Hello! I am currently looking for a new job opportunity 🚀",
+      ar_title: "مرحباً بك! أنا أبحث حالياً عن فرصة عمل جديدة 🚀",
+      en_subtitle: "Do you have an open role or vacancy in your company?",
+      ar_subtitle: "هل لديك وظيفة أو شاغر متاح في شركتك/مؤسستك؟",
+      en_yes: "Yes, we do",
+      ar_yes: "نعم، لدينا شاغر",
+      en_no: "No, not right now",
+      ar_no: "لا، ليس لدينا الآن"
+    },
+    noScreen: {
+      en_message: "Thank you for your time and interest! ❤️ If you know someone looking for talents like me, I'd really appreciate it if you could share this link with them.",
+      ar_message: "شكراً لاهتمامك ووقتك! ❤️ إذا كنت تعرف أحداً يبحث عن كفاءات مثلي، أكون ممتناً جداً لو شاركت هذا الرابط معه."
+    },
+    profile: {
+      name: "Ibrahim Abu Shameh",
+      en_title: "Sales & Business Development Professional",
+      ar_title: "",
+      en_subtitle: "Customer Success · Sales Enablement · Sales Operations",
+      ar_subtitle: "",
+      en_badge: "Open to opportunities",
+      ar_badge: "",
+      en_about: "I am a Sales & Business Development Professional with a strong interest in driving growth, building lasting client relationships, and supporting sales operations. Coming from a Computer Information Systems (CIS) background with technical training (CCNA), I enjoy connecting technology with practical business needs — quickly adapting to new products, understanding client pain points, and communicating solutions effectively across industries.",
+      ar_about: "أنا محترف مبيعات وتطوير أعمال، ولدي اهتمام كبير بتحقيق النمو وبناء علاقات طويلة الأمد مع العملاء ودعم عمليات المبيعات. أتمتع بخلفية في نظم المعلومات الحاسوبية (CIS) وتدريب تقني (CCNA)، وأستمتع بربط التكنولوجيا بالاحتياجات العملية للأعمال، من خلال التكيف السريع مع المنتجات الجديدة وفهم تحديات العملاء وتوصيل الحلول بفعالية عبر مختلف القطاعات."
+    },
+    focusAreas: [
+      { icon: "🎯", en_title: "Sales & Biz Dev", ar_title: "المبيعات وتطوير الأعمال", en_desc: "Prospecting, client engagement & account support", ar_desc: "استقطاب العملاء المحتملين والتفاعل معهم ودعم الحسابات" },
+      { icon: "🤝", en_title: "Customer Success", ar_title: "نجاح العملاء", en_desc: "Relationship management & onboarding", ar_desc: "إدارة العلاقات وتهيئة العملاء الجدد" },
+      { icon: "⚙️", en_title: "Sales Enablement", ar_title: "تمكين المبيعات", en_desc: "Process optimization & CRM usage", ar_desc: "تحسين العمليات واستخدام أنظمة إدارة علاقات العملاء" },
+      { icon: "💻", en_title: "Technical Aptitude", ar_title: "الكفاءة التقنية", en_desc: "CIS background, fast adaptation to tools", ar_desc: "خلفية في نظم المعلومات الحاسوبية وسرعة التكيف مع الأدوات" }
+    ],
+    skills: [
+      { en: "Business Development", ar: "تطوير الأعمال" },
+      { en: "Sales Operations", ar: "عمليات المبيعات" },
+      { en: "Customer Success", ar: "نجاح العملاء" },
+      { en: "Account Management", ar: "إدارة الحسابات" },
+      { en: "Technical Product Sales", ar: "مبيعات المنتجات التقنية" },
+      { en: "CRM Usage", ar: "استخدام أنظمة CRM" },
+      { en: "Client Engagement", ar: "التفاعل مع العملاء" }
+    ],
+    education: {
+      en_text: "Bachelor's Degree, Computer Information Systems — [Add university & year]",
+      ar_text: "بكالوريوس في نظم المعلومات الحاسوبية — [أضف اسم الجامعة والسنة]"
+    },
+    roleOptions: [
+      { value: "marketing", icon: "📈", en_title: "Marketing", ar_title: "التسويق", en_desc: "Brand, campaigns & growth-focused roles", ar_desc: "العلامة التجارية والحملات والأدوار التي تركز على النمو" },
+      { value: "sales", icon: "🤝", en_title: "Sales Support / Sales Enablement", ar_title: "دعم المبيعات / تمكين المبيعات", en_desc: "CRM, process & sales operations roles", ar_desc: "أدوار إدارة علاقات العملاء والعمليات وعمليات المبيعات" },
+      { value: "events", icon: "🎉", en_title: "Events Management", ar_title: "إدارة الفعاليات", en_desc: "Planning, coordination & on-site roles", ar_desc: "التخطيط والتنسيق والأدوار الميدانية" }
+    ]
+  };
+
+  const SECRET_KEY = "ibrahim_admin_secret_v1";
+
+  const { createApp, ref, reactive } = Vue;
+
+  createApp({
+    components: {
+      field: {
+        props: ["label"],
+        template: '<label class="block"><span class="block text-xs font-semibold text-gray-500 mb-1">{{ label }}</span><slot /></label>'
+      }
+    },
+    setup() {
+      const unlocked = ref(false);
+      const loading = ref(false);
+      const saving = ref(false);
+      const error = ref("");
+      const status = ref("");
+      const statusOk = ref(true);
+      const secret = ref(sessionStorage.getItem(SECRET_KEY) || "");
+
+      const content = reactive(JSON.parse(JSON.stringify(DEFAULT_CONTENT)));
+
+      async function fetchContent() {
+        const res = await fetch(CONFIG.backendUrl + "?action=content");
+        if (!res.ok) throw new Error("Request failed");
+        const remote = await res.json();
+        if (remote && remote.error) throw new Error(remote.error);
+        Object.assign(content, remote);
+      }
+
+      async function unlock() {
+        if (!CONFIG.backendUrl) {
+          error.value = "Set CONFIG.backendUrl at the top of admin.html first.";
+          return;
+        }
+        if (!secret.value) {
+          error.value = "Enter the admin secret.";
+          return;
+        }
+        loading.value = true;
+        error.value = "";
+        try {
+          await fetchContent();
+          sessionStorage.setItem(SECRET_KEY, secret.value);
+          unlocked.value = true;
+        } catch (e) {
+          error.value = "Could not load content: " + e.message;
+        } finally {
+          loading.value = false;
+        }
+      }
+
+      async function reload() {
+        if (!window.confirm("Discard unsaved edits and reload the last saved content from the server?")) return;
+        saving.value = true;
+        try {
+          await fetchContent();
+          status.value = "Reloaded from server.";
+          statusOk.value = true;
+        } catch (e) {
+          status.value = "Reload failed: " + e.message;
+          statusOk.value = false;
+        } finally {
+          saving.value = false;
+        }
+      }
+
+      async function save() {
+        saving.value = true;
+        status.value = "";
+        try {
+          const res = await fetch(CONFIG.backendUrl, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({
+              action: "updateContent",
+              secret: secret.value,
+              content: JSON.parse(JSON.stringify(content))
+            })
+          });
+          const result = await res.json();
+          if (result.ok) {
+            status.value = "Saved! Live site will pick this up on next load.";
+            statusOk.value = true;
+          } else {
+            status.value = "Save failed: " + (result.error || "unknown error");
+            statusOk.value = false;
+          }
+        } catch (e) {
+          status.value = "Save failed: " + e.message;
+          statusOk.value = false;
+        } finally {
+          saving.value = false;
+        }
+      }
+
+      function addFocusArea() {
+        content.focusAreas.push({ icon: "✨", en_title: "", ar_title: "", en_desc: "", ar_desc: "" });
+      }
+
+      return {
+        unlocked, loading, saving, error, status, statusOk, secret, content,
+        unlock, reload, save, addFocusArea
+      };
+    }
+  }).mount("#app");
+})();
+</script>
+</body>
+</html>

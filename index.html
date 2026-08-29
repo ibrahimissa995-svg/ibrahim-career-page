@@ -109,10 +109,10 @@
           </div>
 
           <p class="text-center text-xl font-extrabold text-gray-900 leading-snug tracking-tight">
-            Hello! I am currently looking for a new job opportunity 🚀
+            {{ content.greeting.en_title }}
           </p>
           <p class="text-center text-gray-500 mt-2.5 leading-relaxed">
-            Do you have an open role or vacancy in your company?
+            {{ content.greeting.en_subtitle }}
           </p>
 
           <div class="my-6 flex items-center gap-3">
@@ -122,20 +122,20 @@
           </div>
 
           <p dir="rtl" lang="ar" class="font-cairo text-center text-xl font-bold text-gray-900 leading-relaxed">
-            مرحباً بك! أنا أبحث حالياً عن فرصة عمل جديدة 🚀
+            {{ content.greeting.ar_title }}
           </p>
           <p dir="rtl" lang="ar" class="font-cairo text-center text-gray-500 mt-2.5 leading-relaxed">
-            هل لديك وظيفة أو شاغر متاح في شركتك/مؤسستك؟
+            {{ content.greeting.ar_subtitle }}
           </p>
 
           <div class="mt-8 grid grid-cols-1 gap-3">
             <button @click="answer('yes')" class="btn-press w-full rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-700 hover:to-brand-800 transition text-white py-4 px-4 shadow-lg shadow-brand-200">
-              <span class="flex items-center justify-center gap-2 text-base font-bold">✅ Yes, we do</span>
-              <span dir="rtl" class="block font-cairo text-sm text-brand-100 mt-0.5">نعم، لدينا شاغر</span>
+              <span class="flex items-center justify-center gap-2 text-base font-bold">✅ {{ content.greeting.en_yes }}</span>
+              <span dir="rtl" class="block font-cairo text-sm text-brand-100 mt-0.5">{{ content.greeting.ar_yes }}</span>
             </button>
             <button @click="answer('no')" class="btn-press w-full rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 transition text-gray-700 py-4 px-4">
-              <span class="block text-base font-semibold">No, not right now</span>
-              <span dir="rtl" class="block font-cairo text-sm text-gray-400 mt-0.5">لا، ليس لدينا الآن</span>
+              <span class="block text-base font-semibold">{{ content.greeting.en_no }}</span>
+              <span dir="rtl" class="block font-cairo text-sm text-gray-400 mt-0.5">{{ content.greeting.ar_no }}</span>
             </button>
           </div>
         </div>
@@ -151,13 +151,13 @@
           </div>
 
           <p class="text-center text-gray-800 leading-relaxed">
-            Thank you for your time and interest! ❤️ If you know someone looking for talents like me, I'd really appreciate it if you could share this link with them.
+            {{ content.noScreen.en_message }}
           </p>
 
           <div class="my-6 h-px bg-gray-100"></div>
 
           <p dir="rtl" lang="ar" class="font-cairo text-center text-gray-800 leading-relaxed">
-            شكراً لاهتمامك ووقتك! ❤️ إذا كنت تعرف أحداً يبحث عن كفاءات مثلي، أكون ممتناً جداً لو شاركت هذا الرابط معه.
+            {{ content.noScreen.ar_message }}
           </p>
 
           <div class="mt-8 grid grid-cols-1 gap-3">
@@ -184,40 +184,52 @@
             <div class="h-24 bg-gradient-to-r from-brand-600 via-brand-500 to-indigo-400"></div>
             <div class="px-6 sm:px-8 pb-8 -mt-10">
               <div class="flex items-end justify-between">
-                <div class="h-20 w-20 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 avatar-ring flex items-center justify-center text-white text-2xl font-extrabold">IA</div>
+                <div class="h-20 w-20 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 avatar-ring flex items-center justify-center text-white text-2xl font-extrabold">{{ avatarInitials }}</div>
                 <span class="mb-1 inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-full">
                   <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  Open to opportunities
+                  {{ content.profile.en_badge }}
                 </span>
               </div>
 
-              <h1 class="text-2xl font-extrabold text-gray-900 leading-tight mt-4">Ibrahim Abu Shameh</h1>
-              <p class="text-[15px] text-brand-700 font-semibold leading-snug mt-1">Sales &amp; Business Development Professional</p>
-              <p class="text-sm text-gray-400 mt-0.5">Customer Success · Sales Enablement · Sales Operations</p>
+              <h1 class="text-2xl font-extrabold text-gray-900 leading-tight mt-4">{{ content.profile.name }}</h1>
+              <p class="text-[15px] text-brand-700 font-semibold leading-snug mt-1">{{ content.profile.en_title }}</p>
+              <p v-if="content.profile.ar_title" dir="rtl" class="font-cairo text-sm text-brand-400 mt-0.5">{{ content.profile.ar_title }}</p>
+              <p class="text-sm text-gray-400 mt-0.5">{{ content.profile.en_subtitle }}</p>
+              <p v-if="content.profile.ar_subtitle" dir="rtl" class="font-cairo text-xs text-gray-400 mt-0.5">{{ content.profile.ar_subtitle }}</p>
 
               <p class="text-xs uppercase tracking-wide text-gray-400 font-bold mt-6 mb-2">About</p>
               <p class="text-gray-600 leading-relaxed text-[15px]">
-                I am a Sales &amp; Business Development Professional with a strong interest in driving growth, building lasting client relationships, and supporting sales operations. Coming from a Computer Information Systems (CIS) background with technical training (CCNA), I enjoy connecting technology with practical business needs — quickly adapting to new products, understanding client pain points, and communicating solutions effectively across industries.
+                {{ content.profile.en_about }}
+              </p>
+              <p v-if="content.profile.ar_about" dir="rtl" lang="ar" class="font-cairo text-gray-500 leading-relaxed text-[15px] mt-2">
+                {{ content.profile.ar_about }}
               </p>
 
               <p class="text-xs uppercase tracking-wide text-gray-400 font-bold mt-6 mb-3">Areas of Focus</p>
               <div class="grid grid-cols-2 gap-3">
-                <div v-for="f in focusAreas" :key="f.title" class="rounded-2xl border border-gray-100 bg-gray-50/60 p-3.5">
+                <div v-for="f in focusAreas" :key="f.en_title" class="rounded-2xl border border-gray-100 bg-gray-50/60 p-3.5">
                   <div class="text-xl">{{ f.icon }}</div>
-                  <p class="text-sm font-bold text-gray-900 mt-1.5 leading-tight">{{ f.title }}</p>
-                  <p class="text-xs text-gray-500 mt-0.5 leading-snug">{{ f.desc }}</p>
+                  <p class="text-sm font-bold text-gray-900 mt-1.5 leading-tight">{{ f.en_title }}</p>
+                  <p v-if="f.ar_title" dir="rtl" class="font-cairo text-xs text-gray-500 mt-0.5 leading-snug">{{ f.ar_title }}</p>
+                  <p class="text-xs text-gray-500 mt-0.5 leading-snug">{{ f.en_desc }}</p>
+                  <p v-if="f.ar_desc" dir="rtl" class="font-cairo text-xs text-gray-400 mt-0.5 leading-snug">{{ f.ar_desc }}</p>
                 </div>
               </div>
 
               <p class="text-xs uppercase tracking-wide text-gray-400 font-bold mt-6 mb-2.5">Skills</p>
               <div class="flex flex-wrap gap-2">
-                <span v-for="s in skills" :key="s" class="skill-chip text-sm font-medium bg-brand-50 text-brand-700 px-3.5 py-1.5 rounded-full">{{ s }}</span>
+                <span v-for="s in skills" :key="s.en" class="skill-chip text-sm font-medium bg-brand-50 text-brand-700 px-3.5 py-1.5 rounded-full">
+                  {{ s.en }}<span v-if="s.ar" dir="rtl" class="font-cairo text-brand-400"> / {{ s.ar }}</span>
+                </span>
               </div>
 
               <p class="text-xs uppercase tracking-wide text-gray-400 font-bold mt-6 mb-2">Education</p>
               <div class="flex items-start gap-2.5 text-[15px] text-gray-700 bg-gray-50/60 border border-gray-100 rounded-2xl p-3.5">
                 <span class="text-lg">🎓</span>
-                <span>Bachelor's Degree, Computer Information Systems <span class="text-gray-400">— <em>[Add university &amp; year]</em></span></span>
+                <span>
+                  <span class="block">{{ content.education.en_text }}</span>
+                  <span v-if="content.education.ar_text" dir="rtl" class="font-cairo block text-gray-400 text-sm mt-1">{{ content.education.ar_text }}</span>
+                </span>
               </div>
 
               <a :href="config.linkedinUrl" target="_blank" rel="noopener noreferrer"
@@ -252,8 +264,10 @@
                 <input type="radio" name="target-role" class="sr-only" :value="opt.value" v-model="selectedRole">
                 <span class="text-2xl">{{ opt.icon }}</span>
                 <span class="flex-1">
-                  <span class="block font-semibold text-gray-900">{{ opt.title }}</span>
-                  <span class="block text-sm text-gray-500">{{ opt.desc }}</span>
+                  <span class="block font-semibold text-gray-900">{{ opt.en_title }}</span>
+                  <span v-if="opt.ar_title" dir="rtl" class="block font-cairo text-xs text-gray-400 mt-0.5">{{ opt.ar_title }}</span>
+                  <span class="block text-sm text-gray-500">{{ opt.en_desc }}</span>
+                  <span v-if="opt.ar_desc" dir="rtl" class="block font-cairo text-xs text-gray-400 mt-0.5">{{ opt.ar_desc }}</span>
                 </span>
                 <span class="role-radio-dot mt-1 h-5 w-5 rounded-full border-2 border-gray-300 shrink-0"></span>
               </label>
@@ -361,11 +375,82 @@
       events: "resumes/resume-events.pdf"
     },
     // Paste your deployed Google Apps Script Web App URL here to enable
-    // site-wide (shared) analytics. Leave empty to use this-device-only stats.
-    analyticsEndpoint: "",
+    // site-wide analytics AND admin-editable page content.
+    // Leave empty to use this-device-only stats and the defaults below.
+    backendUrl: "",
     // Change this before going live — gates the Owner Stats dashboard.
     ownerPin: "1234"
   };
+
+  // Fallback content, used until the backend responds (or if it's unreachable).
+  // Keep this in sync with DEFAULT_CONTENT in apps-script/Code.gs — edit live
+  // content via admin.html instead of editing this once the backend is set up.
+  const DEFAULT_CONTENT = {
+    greeting: {
+      en_title: "Hello! I am currently looking for a new job opportunity 🚀",
+      ar_title: "مرحباً بك! أنا أبحث حالياً عن فرصة عمل جديدة 🚀",
+      en_subtitle: "Do you have an open role or vacancy in your company?",
+      ar_subtitle: "هل لديك وظيفة أو شاغر متاح في شركتك/مؤسستك؟",
+      en_yes: "Yes, we do",
+      ar_yes: "نعم، لدينا شاغر",
+      en_no: "No, not right now",
+      ar_no: "لا، ليس لدينا الآن"
+    },
+    noScreen: {
+      en_message: "Thank you for your time and interest! ❤️ If you know someone looking for talents like me, I'd really appreciate it if you could share this link with them.",
+      ar_message: "شكراً لاهتمامك ووقتك! ❤️ إذا كنت تعرف أحداً يبحث عن كفاءات مثلي، أكون ممتناً جداً لو شاركت هذا الرابط معه."
+    },
+    profile: {
+      name: "Ibrahim Abu Shameh",
+      en_title: "Sales & Business Development Professional",
+      ar_title: "",
+      en_subtitle: "Customer Success · Sales Enablement · Sales Operations",
+      ar_subtitle: "",
+      en_badge: "Open to opportunities",
+      ar_badge: "",
+      en_about: "I am a Sales & Business Development Professional with a strong interest in driving growth, building lasting client relationships, and supporting sales operations. Coming from a Computer Information Systems (CIS) background with technical training (CCNA), I enjoy connecting technology with practical business needs — quickly adapting to new products, understanding client pain points, and communicating solutions effectively across industries.",
+      ar_about: "أنا محترف مبيعات وتطوير أعمال، ولدي اهتمام كبير بتحقيق النمو وبناء علاقات طويلة الأمد مع العملاء ودعم عمليات المبيعات. أتمتع بخلفية في نظم المعلومات الحاسوبية (CIS) وتدريب تقني (CCNA)، وأستمتع بربط التكنولوجيا بالاحتياجات العملية للأعمال، من خلال التكيف السريع مع المنتجات الجديدة وفهم تحديات العملاء وتوصيل الحلول بفعالية عبر مختلف القطاعات."
+    },
+    focusAreas: [
+      { icon: "🎯", en_title: "Sales & Biz Dev", ar_title: "المبيعات وتطوير الأعمال", en_desc: "Prospecting, client engagement & account support", ar_desc: "استقطاب العملاء المحتملين والتفاعل معهم ودعم الحسابات" },
+      { icon: "🤝", en_title: "Customer Success", ar_title: "نجاح العملاء", en_desc: "Relationship management & onboarding", ar_desc: "إدارة العلاقات وتهيئة العملاء الجدد" },
+      { icon: "⚙️", en_title: "Sales Enablement", ar_title: "تمكين المبيعات", en_desc: "Process optimization & CRM usage", ar_desc: "تحسين العمليات واستخدام أنظمة إدارة علاقات العملاء" },
+      { icon: "💻", en_title: "Technical Aptitude", ar_title: "الكفاءة التقنية", en_desc: "CIS background, fast adaptation to tools", ar_desc: "خلفية في نظم المعلومات الحاسوبية وسرعة التكيف مع الأدوات" }
+    ],
+    skills: [
+      { en: "Business Development", ar: "تطوير الأعمال" },
+      { en: "Sales Operations", ar: "عمليات المبيعات" },
+      { en: "Customer Success", ar: "نجاح العملاء" },
+      { en: "Account Management", ar: "إدارة الحسابات" },
+      { en: "Technical Product Sales", ar: "مبيعات المنتجات التقنية" },
+      { en: "CRM Usage", ar: "استخدام أنظمة CRM" },
+      { en: "Client Engagement", ar: "التفاعل مع العملاء" }
+    ],
+    education: {
+      en_text: "Bachelor's Degree, Computer Information Systems — [Add university & year]",
+      ar_text: "بكالوريوس في نظم المعلومات الحاسوبية — [أضف اسم الجامعة والسنة]"
+    },
+    roleOptions: [
+      { value: "marketing", icon: "📈", en_title: "Marketing", ar_title: "التسويق", en_desc: "Brand, campaigns & growth-focused roles", ar_desc: "العلامة التجارية والحملات والأدوار التي تركز على النمو" },
+      { value: "sales", icon: "🤝", en_title: "Sales Support / Sales Enablement", ar_title: "دعم المبيعات / تمكين المبيعات", en_desc: "CRM, process & sales operations roles", ar_desc: "أدوار إدارة علاقات العملاء والعمليات وعمليات المبيعات" },
+      { value: "events", icon: "🎉", en_title: "Events Management", ar_title: "إدارة الفعاليات", en_desc: "Planning, coordination & on-site roles", ar_desc: "التخطيط والتنسيق والأدوار الميدانية" }
+    ]
+  };
+
+  const CONTENT_CACHE_KEY = "ibrahim_qr_content_v1";
+
+  function loadCachedContent() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(CONTENT_CACHE_KEY));
+      return raw || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function saveCachedContent(content) {
+    try { localStorage.setItem(CONTENT_CACHE_KEY, JSON.stringify(content)); } catch (e) {}
+  }
 
   const STORAGE_KEY = "ibrahim_qr_analytics_v1";
 
@@ -400,23 +485,34 @@
       const selectedRole = ref(null);
       const companyName = ref("");
 
-      const roleOptions = [
-        { value: "marketing", icon: "📈", title: "Marketing", desc: "Brand, campaigns & growth-focused roles" },
-        { value: "sales", icon: "🤝", title: "Sales Support / Sales Enablement", desc: "CRM, process & sales operations roles" },
-        { value: "events", icon: "🎉", title: "Events Management", desc: "Planning, coordination & on-site roles" }
-      ];
+      const content = reactive(JSON.parse(JSON.stringify(DEFAULT_CONTENT)));
+      const cached = loadCachedContent();
+      if (cached) Object.assign(content, cached);
 
-      const focusAreas = [
-        { icon: "🎯", title: "Sales & Biz Dev", desc: "Prospecting, client engagement & account support" },
-        { icon: "🤝", title: "Customer Success", desc: "Relationship management & onboarding" },
-        { icon: "⚙️", title: "Sales Enablement", desc: "Process optimization & CRM usage" },
-        { icon: "💻", title: "Technical Aptitude", desc: "CIS background, fast adaptation to tools" }
-      ];
+      async function refreshContent() {
+        if (!config.backendUrl) return;
+        try {
+          const res = await fetch(config.backendUrl + "?action=content");
+          if (res.ok) {
+            const remote = await res.json();
+            if (remote && !remote.error) {
+              Object.assign(content, remote);
+              saveCachedContent(remote);
+            }
+          }
+        } catch (e) { /* keep showing cached/fallback content silently */ }
+      }
 
-      const skills = [
-        "Business Development", "Sales Operations", "Customer Success",
-        "Account Management", "Technical Product Sales", "CRM Usage", "Client Engagement"
-      ];
+      const avatarInitials = computed(function () {
+        const parts = (content.profile.name || "").trim().split(/\s+/).filter(Boolean);
+        if (parts.length === 0) return "";
+        if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+      });
+
+      const roleOptions = computed(function () { return content.roleOptions; });
+      const focusAreas = computed(function () { return content.focusAreas; });
+      const skills = computed(function () { return content.skills; });
 
       const downloadReady = computed(function () {
         return !!selectedRole.value && companyName.value.trim().length > 0;
@@ -435,9 +531,9 @@
       }
 
       function sendRemote(event) {
-        if (!config.analyticsEndpoint) return;
+        if (!config.backendUrl) return;
         try {
-          fetch(config.analyticsEndpoint, {
+          fetch(config.backendUrl, {
             method: "POST",
             mode: "no-cors",
             headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -518,9 +614,9 @@
       async function refreshStats() {
         let fresh = loadLocalStats();
         let source = "local";
-        if (config.analyticsEndpoint) {
+        if (config.backendUrl) {
           try {
-            const res = await fetch(config.analyticsEndpoint + "?action=stats");
+            const res = await fetch(config.backendUrl + "?action=stats");
             if (res.ok) {
               const remote = await res.json();
               fresh = Object.assign(defaultStats(), remote);
@@ -566,9 +662,11 @@
 
       // ---------- init ----------
       trackEvent("visits");
+      refreshContent();
 
       return {
         config, screen, toast, stats, selectedRole, companyName,
+        content, avatarInitials,
         roleOptions, focusAreas, skills, downloadReady,
         answer, shareLink, downloadResume, footerClick,
         statsOpen, statsSource, statRows, exportStats, resetStats
