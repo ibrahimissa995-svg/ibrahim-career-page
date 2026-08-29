@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ibrahim Abu Shameh — Let's Connect</title>
+<meta name="description" content="Sales &amp; Business Development Professional — open to new opportunities.">
+<meta property="og:title" content="Ibrahim Abu Shameh — Open to new opportunities">
+<meta property="og:description" content="Sales &amp; Business Development | Customer Success | Sales Enablement">
+<meta name="theme-color" content="#4338ca">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          cairo: ['Cairo', 'sans-serif']
+        },
+        colors: {
+          brand: {
+            50: '#eef2ff', 100: '#e0e7ff', 200: '#c7d2fe', 300: '#a5b4fc',
+            400: '#818cf8', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca',
+            800: '#3730a3', 900: '#312e81'
+          }
+        },
+        boxShadow: {
+          glow: '0 25px 65px -20px rgba(67,56,202,0.45)',
+          card: '0 10px 40px -12px rgba(30,27,75,0.12)'
+        }
+      }
+    }
+  };
+</script>
+<script src="https://unpkg.com/vue@3.4.31/dist/vue.global.prod.js"></script>
+<style>
+  html, body { font-family: 'Inter', system-ui, sans-serif; background:#f5f6fb; }
+  .font-cairo { font-family: 'Cairo', sans-serif; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 999px; }
+  [v-cloak] { display: none !important; }
+
+  /* animated hero background */
+  .hero-bg {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #f5f6fb;
+  }
+  .hero-blob {
+    position: absolute; border-radius: 999px; filter: blur(60px); opacity: .55;
+    animation: float 14s ease-in-out infinite;
+  }
+  .hero-blob.b1 { width: 340px; height: 340px; top: -90px; left: -80px; background: radial-gradient(circle,#a5b4fc,#eef2ff); }
+  .hero-blob.b2 { width: 300px; height: 300px; bottom: -100px; right: -70px; background: radial-gradient(circle,#c7d2fe,#f5f6fb); animation-delay: -6s; }
+  .hero-blob.b3 { width: 220px; height: 220px; top: 40%; right: 15%; background: radial-gradient(circle,#818cf8,#eef2ff); opacity: .35; animation-delay: -3s; }
+  @keyframes float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-24px) scale(1.05); } }
+
+  /* screen transitions */
+  .fade-slide-enter-active { transition: opacity .45s ease, transform .45s cubic-bezier(.22,1,.36,1); }
+  .fade-slide-leave-active { transition: opacity .2s ease; position: absolute; inset: 0; }
+  .fade-slide-enter-from { opacity: 0; transform: translateY(16px) scale(.99); }
+  .fade-slide-leave-to { opacity: 0; }
+
+  .pop-enter-active { transition: opacity .2s ease, transform .25s cubic-bezier(.22,1,.36,1); }
+  .pop-leave-active { transition: opacity .15s ease, transform .15s ease; }
+  .pop-enter-from, .pop-leave-to { opacity: 0; transform: translateY(8px) scale(.97); }
+
+  .toast-enter-active { transition: opacity .25s ease, transform .25s ease; }
+  .toast-leave-active { transition: opacity .2s ease, transform .2s ease; }
+  .toast-enter-from, .toast-leave-to { opacity: 0; transform: translate(-50%, 10px); }
+
+  .role-card { transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease, transform .12s ease; }
+  .role-card:active { transform: scale(.98); }
+  .role-card-active { border-color: #4f46e5; background-color: #eef2ff; box-shadow: 0 8px 24px -10px rgba(79,70,229,.35); }
+  .role-card-active .role-radio-dot { border-color: #4f46e5; background: #4f46e5; }
+  .role-card-active .role-radio-dot::after { content:''; }
+
+  .skill-chip { transition: transform .15s ease, box-shadow .15s ease; }
+  .skill-chip:hover { transform: translateY(-2px); box-shadow: 0 6px 16px -6px rgba(79,70,229,.35); }
+
+  .btn-press:active { transform: scale(.97); }
+
+  .avatar-ring { box-shadow: 0 0 0 4px #fff, 0 0 0 8px #e0e7ff; }
+
+  .bar-track { background: #eef0f7; }
+  .bar-fill { transition: width .6s cubic-bezier(.22,1,.36,1); }
+
+  .step-dot { transition: background-color .25s ease, color .25s ease, box-shadow .25s ease; }
+</style>
+</head>
+<body class="min-h-screen text-gray-900 antialiased">
+
+<div id="app" v-cloak>
+  <div class="hero-bg" aria-hidden="true">
+    <div class="hero-blob b1"></div>
+    <div class="hero-blob b2"></div>
+    <div class="hero-blob b3"></div>
+  </div>
+
+  <main class="relative z-10 min-h-screen">
+
+    <!-- ============ SCREEN 1: GREETING ============ -->
+    <Transition name="fade-slide">
+      <section v-if="screen==='greeting'" class="min-h-screen flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full max-w-md bg-white/90 backdrop-blur rounded-3xl shadow-glow border border-white p-6 sm:p-9">
+          <div class="flex justify-center mb-6">
+            <div class="h-16 w-16 rounded-2xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-700 flex items-center justify-center text-3xl shadow-lg shadow-brand-200 animate-[float_5s_ease-in-out_infinite]">👋</div>
+          </div>
+
+          <p class="text-center text-xl font-extrabold text-gray-900 leading-snug tracking-tight">
+            Hello! I am currently looking for a new job opportunity 🚀
+          </p>
+          <p class="text-center text-gray-500 mt-2.5 leading-relaxed">
+            Do you have an open role or vacancy in your company?
+          </p>
+
+          <div class="my-6 flex items-center gap-3">
+            <span class="h-px flex-1 bg-gray-100"></span>
+            <span class="text-[11px] font-semibold tracking-widest text-gray-300">EN / AR</span>
+            <span class="h-px flex-1 bg-gray-100"></span>
+          </div>
+
+          <p dir="rtl" lang="ar" class="font-cairo text-center text-xl font-bold text-gray-900 leading-relaxed">
+            مرحباً بك! أنا أبحث حالياً عن فرصة عمل جديدة 🚀
+          </p>
+          <p dir="rtl" lang="ar" class="font-cairo text-center text-gray-500 mt-2.5 leading-relaxed">
+            هل لديك وظيفة أو شاغر متاح في شركتك/مؤسستك؟
+          </p>
+
+          <div class="mt-8 grid grid-cols-1 gap-3">
+            <button @click="answer('yes')" class="btn-press w-full rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-700 hover:to-brand-800 transition text-white py-4 px-4 shadow-lg shadow-brand-200">
+              <span class="flex items-center justify-center gap-2 text-base font-bold">✅ Yes, we do</span>
+              <span dir="rtl" class="block font-cairo text-sm text-brand-100 mt-0.5">نعم، لدينا شاغر</span>
+            </button>
+            <button @click="answer('no')" class="btn-press w-full rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 transition text-gray-700 py-4 px-4">
+              <span class="block text-base font-semibold">No, not right now</span>
+              <span dir="rtl" class="block font-cairo text-sm text-gray-400 mt-0.5">لا، ليس لدينا الآن</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </Transition>
+
+    <!-- ============ SCREEN 2A: NO PATH ============ -->
+    <Transition name="fade-slide">
+      <section v-if="screen==='no'" class="min-h-screen flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full max-w-md bg-white/90 backdrop-blur rounded-3xl shadow-glow border border-white p-6 sm:p-9">
+          <div class="flex justify-center mb-6">
+            <div class="h-16 w-16 rounded-2xl bg-rose-50 flex items-center justify-center text-3xl">❤️</div>
+          </div>
+
+          <p class="text-center text-gray-800 leading-relaxed">
+            Thank you for your time and interest! ❤️ If you know someone looking for talents like me, I'd really appreciate it if you could share this link with them.
+          </p>
+
+          <div class="my-6 h-px bg-gray-100"></div>
+
+          <p dir="rtl" lang="ar" class="font-cairo text-center text-gray-800 leading-relaxed">
+            شكراً لاهتمامك ووقتك! ❤️ إذا كنت تعرف أحداً يبحث عن كفاءات مثلي، أكون ممتناً جداً لو شاركت هذا الرابط معه.
+          </p>
+
+          <div class="mt-8 grid grid-cols-1 gap-3">
+            <button @click="shareLink" class="btn-press w-full rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 hover:from-brand-700 hover:to-brand-800 transition text-white py-4 px-4 shadow-lg shadow-brand-200 flex items-center justify-center gap-2">
+              <span>🔗</span>
+              <span class="font-semibold">Share Link</span>
+              <span dir="rtl" class="font-cairo text-brand-100">/ مشاركة الرابط</span>
+            </button>
+            <button @click="screen='main'" class="btn-press w-full rounded-2xl bg-gray-50 hover:bg-gray-100 border border-gray-200 transition text-gray-700 py-4 px-4 font-semibold">
+              Browse my profile anyway
+            </button>
+          </div>
+        </div>
+      </section>
+    </Transition>
+
+    <!-- ============ SCREEN 2B: MAIN CAREER PAGE ============ -->
+    <Transition name="fade-slide">
+      <section v-if="screen==='main'" class="min-h-screen p-4 sm:p-6">
+        <div class="w-full max-w-xl mx-auto py-6 sm:py-10 space-y-5">
+
+          <!-- Profile Overview -->
+          <div class="bg-white/95 backdrop-blur rounded-3xl shadow-card border border-white overflow-hidden">
+            <div class="h-24 bg-gradient-to-r from-brand-600 via-brand-500 to-indigo-400"></div>
+            <div class="px-6 sm:px-8 pb-8 -mt-10">
+              <div class="flex items-end justify-between">
+                <div class="h-20 w-20 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 avatar-ring flex items-center justify-center text-white text-2xl font-extrabold">IA</div>
+                <span class="mb-1 inline-flex items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-full">
+                  <span class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Open to opportunities
+                </span>
+              </div>
+
+              <h1 class="text-2xl font-extrabold text-gray-900 leading-tight mt-4">Ibrahim Abu Shameh</h1>
+              <p class="text-[15px] text-brand-700 font-semibold leading-snug mt-1">Sales &amp; Business Development Professional</p>
+              <p class="text-sm text-gray-400 mt-0.5">Customer Success · Sales Enablement · Sales Operations</p>
+
+              <p class="text-xs uppercase tracking-wide text-gray-400 font-bold mt-6 mb-2">About</p>
+              <p class="text-gray-600 leading-relaxed text-[15px]">
+                I am a Sales &amp; Business Development Professional with a strong interest in driving growth, building lasting client relationships, and supporting sales operations. Coming from a Computer Information Systems (CIS) background with technical training (CCNA), I enjoy connecting technology with practical business needs — quickly adapting to new products, understanding client pain points, and communicating solutions effectively across industries.
+              </p>
+
+              <p class="text-xs uppercase tracking-wide text-gray-400 font-bold mt-6 mb-3">Areas of Focus</p>
+              <div class="grid grid-cols-2 gap-3">
+                <div v-for="f in focusAreas" :key="f.title" class="rounded-2xl border border-gray-100 bg-gray-50/60 p-3.5">
+                  <div class="text-xl">{{ f.icon }}</div>
+                  <p class="text-sm font-bold text-gray-900 mt-1.5 leading-tight">{{ f.title }}</p>
+                  <p class="text-xs text-gray-500 mt-0.5 leading-snug">{{ f.desc }}</p>
+                </div>
+              </div>
+
+              <p class="text-xs uppercase tracking-wide text-gray-400 font-bold mt-6 mb-2.5">Skills</p>
+              <div class="flex flex-wrap gap-2">
+                <span v-for="s in skills" :key="s" class="skill-chip text-sm font-medium bg-brand-50 text-brand-700 px-3.5 py-1.5 rounded-full">{{ s }}</span>
+              </div>
+
+              <p class="text-xs uppercase tracking-wide text-gray-400 font-bold mt-6 mb-2">Education</p>
+              <div class="flex items-start gap-2.5 text-[15px] text-gray-700 bg-gray-50/60 border border-gray-100 rounded-2xl p-3.5">
+                <span class="text-lg">🎓</span>
+                <span>Bachelor's Degree, Computer Information Systems <span class="text-gray-400">— <em>[Add university &amp; year]</em></span></span>
+              </div>
+
+              <a :href="config.linkedinUrl" target="_blank" rel="noopener noreferrer"
+                 class="btn-press mt-7 w-full flex items-center justify-center gap-2.5 rounded-2xl bg-[#0A66C2] hover:bg-[#0958a8] transition text-white py-4 px-4 font-bold shadow-lg shadow-blue-100">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.59 0 4.26 2.37 4.26 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+                View LinkedIn Profile
+              </a>
+            </div>
+          </div>
+
+          <!-- Resume Generator -->
+          <div class="bg-white/95 backdrop-blur rounded-3xl shadow-card border border-white p-6 sm:p-8">
+            <h2 class="text-lg font-extrabold text-gray-900">Get My Tailored Resume</h2>
+            <p class="text-sm text-gray-500 mt-1">Select the role you're hiring for, and I'll prep a resume tailored to it.</p>
+
+            <!-- step indicator -->
+            <div class="flex items-center gap-2 mt-5 mb-1">
+              <div class="step-dot h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold"
+                   :class="selectedRole ? 'bg-brand-600 text-white' : 'bg-brand-100 text-brand-600'">1</div>
+              <span class="h-0.5 flex-1 rounded-full" :class="selectedRole ? 'bg-brand-500' : 'bg-gray-100'"></span>
+              <div class="step-dot h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold"
+                   :class="companyName.trim() ? 'bg-brand-600 text-white' : (selectedRole ? 'bg-brand-100 text-brand-600' : 'bg-gray-100 text-gray-400')">2</div>
+              <span class="h-0.5 flex-1 rounded-full" :class="downloadReady ? 'bg-brand-500' : 'bg-gray-100'"></span>
+              <div class="step-dot h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold"
+                   :class="downloadReady ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-400'">3</div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-3 mt-5">
+              <label v-for="opt in roleOptions" :key="opt.value"
+                     class="role-card relative flex items-start gap-3 p-4 rounded-2xl border-2 border-gray-200 cursor-pointer"
+                     :class="{ 'role-card-active': selectedRole === opt.value }">
+                <input type="radio" name="target-role" class="sr-only" :value="opt.value" v-model="selectedRole">
+                <span class="text-2xl">{{ opt.icon }}</span>
+                <span class="flex-1">
+                  <span class="block font-semibold text-gray-900">{{ opt.title }}</span>
+                  <span class="block text-sm text-gray-500">{{ opt.desc }}</span>
+                </span>
+                <span class="role-radio-dot mt-1 h-5 w-5 rounded-full border-2 border-gray-300 shrink-0"></span>
+              </label>
+            </div>
+
+            <Transition name="pop">
+              <div v-if="selectedRole" class="mt-4">
+                <label for="company-name-input" class="block text-sm font-medium text-gray-700 mb-1.5">Company Name <span class="text-rose-500">*</span></label>
+                <input id="company-name-input" v-model="companyName" type="text" required placeholder="e.g. Acme Corp"
+                       class="w-full rounded-xl border-2 border-gray-200 focus:border-brand-500 focus:ring-0 outline-none px-4 py-3 text-[15px] transition" />
+              </div>
+            </Transition>
+
+            <button @click="downloadResume" :disabled="!downloadReady"
+              class="btn-press mt-5 w-full rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 disabled:from-gray-200 disabled:to-gray-200 disabled:text-gray-400 hover:enabled:from-brand-700 hover:enabled:to-brand-800 transition text-white py-4 px-4 font-bold shadow-lg shadow-brand-100 disabled:shadow-none">
+              {{ downloadReady ? ('⬇️ Download Tailored Resume for ' + companyName.trim()) : 'Select a role and enter company name' }}
+            </button>
+
+            <p class="text-xs text-gray-400 mt-3 text-center leading-relaxed">
+              🔒 We only count which role was selected. Your company name and identity are never stored — 100% anonymous.
+            </p>
+          </div>
+
+        </div>
+      </section>
+    </Transition>
+
+  </main>
+
+  <!-- ============ TOAST ============ -->
+  <Transition name="toast">
+    <div v-if="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-xl">{{ toast }}</div>
+  </Transition>
+
+  <!-- ============ FOOTER (persistent, hidden trigger) ============ -->
+  <footer class="relative z-10 py-6 text-center">
+    <p @click="footerClick" class="text-xs text-gray-400 select-none cursor-default inline-block px-3 py-1">
+      © 2026 Ibrahim Abu Shameh
+    </p>
+  </footer>
+
+  <!-- ============ OWNER STATS MODAL ============ -->
+  <Transition name="pop">
+    <div v-if="statsOpen" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+      <div class="absolute inset-0 bg-black/50" @click="statsOpen=false"></div>
+      <div class="relative w-full sm:max-w-lg bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl p-6 sm:p-7 max-h-[88vh] overflow-y-auto">
+        <div class="flex items-center justify-between mb-1">
+          <h3 class="text-lg font-extrabold text-gray-900">📊 Owner Stats</h3>
+          <button @click="statsOpen=false" class="h-8 w-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-500">✕</button>
+        </div>
+        <span class="inline-block text-xs font-medium bg-gray-100 text-gray-500 px-2.5 py-1 rounded-full mb-4">
+          {{ statsSource === 'remote' ? '🌐 Site-wide (all visitors)' : '📱 This device only' }}
+        </span>
+
+        <div class="grid grid-cols-3 gap-2.5">
+          <div class="bg-brand-50 rounded-2xl p-3.5 text-center">
+            <p class="text-2xl font-extrabold text-brand-700">{{ stats.visits || 0 }}</p>
+            <p class="text-[11px] font-medium text-brand-500 mt-0.5">Total Visits</p>
+          </div>
+          <div class="bg-emerald-50 rounded-2xl p-3.5 text-center">
+            <p class="text-2xl font-extrabold text-emerald-700">{{ stats.yes || 0 }}</p>
+            <p class="text-[11px] font-medium text-emerald-500 mt-0.5">Yes Clicks</p>
+          </div>
+          <div class="bg-rose-50 rounded-2xl p-3.5 text-center">
+            <p class="text-2xl font-extrabold text-rose-700">{{ stats.no || 0 }}</p>
+            <p class="text-[11px] font-medium text-rose-500 mt-0.5">No Clicks</p>
+          </div>
+        </div>
+
+        <p class="text-xs uppercase tracking-wide text-gray-400 font-semibold mt-6 mb-2.5">Detailed Breakdown</p>
+        <div class="space-y-3">
+          <div v-for="row in statRows" :key="row.label">
+            <div class="flex items-center justify-between text-sm mb-1">
+              <span class="text-gray-700 font-medium">{{ row.label }}</span>
+              <span class="text-gray-500">{{ row.count }} <span class="text-gray-400">({{ row.pct }}%)</span></span>
+            </div>
+            <div class="bar-track h-2 rounded-full overflow-hidden">
+              <div class="bar-fill h-full rounded-full bg-gradient-to-r from-brand-500 to-brand-700" :style="{ width: row.pct + '%' }"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mt-7">
+          <button @click="exportStats" class="rounded-xl bg-gray-100 hover:bg-gray-200 transition text-gray-800 py-2.5 px-4 font-semibold text-sm">⬇️ Export Stats</button>
+          <button @click="resetStats" class="rounded-xl bg-rose-50 hover:bg-rose-100 transition text-rose-600 py-2.5 px-4 font-semibold text-sm">🗑️ Reset Local Data</button>
+        </div>
+        <p class="text-[11px] text-gray-400 mt-3 text-center leading-relaxed">
+          Reset only clears counters stored on <em>this device</em>. Shared, site-wide counts live in your Google Sheet — clear them there if needed.
+        </p>
+      </div>
+    </div>
+  </Transition>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ============ CONFIG — edit these ============
+  const CONFIG = {
+    linkedinUrl: "https://www.linkedin.com/in/ibrahim-a-071099139/",
+    resumeFiles: {
+      marketing: "resumes/resume-marketing.pdf",
+      sales: "resumes/resume-sales-support.pdf",
+      events: "resumes/resume-events.pdf"
+    },
+    // Paste your deployed Google Apps Script Web App URL here to enable
+    // site-wide (shared) analytics. Leave empty to use this-device-only stats.
+    analyticsEndpoint: "",
+    // Change this before going live — gates the Owner Stats dashboard.
+    ownerPin: "1234"
+  };
+
+  const STORAGE_KEY = "ibrahim_qr_analytics_v1";
+
+  function defaultStats() {
+    return { visits: 0, yes: 0, no: 0, resume_marketing: 0, resume_sales: 0, resume_events: 0 };
+  }
+
+  function loadLocalStats() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      return raw ? Object.assign(defaultStats(), raw) : defaultStats();
+    } catch (e) {
+      return defaultStats();
+    }
+  }
+
+  function saveLocalStats(stats) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(stats)); } catch (e) {}
+  }
+
+  const { createApp, ref, reactive, computed } = Vue;
+
+  createApp({
+    setup() {
+      const config = CONFIG;
+      const screen = ref("greeting");
+      const toast = ref("");
+      let toastTimer = null;
+
+      const stats = reactive(loadLocalStats());
+
+      const selectedRole = ref(null);
+      const companyName = ref("");
+
+      const roleOptions = [
+        { value: "marketing", icon: "📈", title: "Marketing", desc: "Brand, campaigns & growth-focused roles" },
+        { value: "sales", icon: "🤝", title: "Sales Support / Sales Enablement", desc: "CRM, process & sales operations roles" },
+        { value: "events", icon: "🎉", title: "Events Management", desc: "Planning, coordination & on-site roles" }
+      ];
+
+      const focusAreas = [
+        { icon: "🎯", title: "Sales & Biz Dev", desc: "Prospecting, client engagement & account support" },
+        { icon: "🤝", title: "Customer Success", desc: "Relationship management & onboarding" },
+        { icon: "⚙️", title: "Sales Enablement", desc: "Process optimization & CRM usage" },
+        { icon: "💻", title: "Technical Aptitude", desc: "CIS background, fast adaptation to tools" }
+      ];
+
+      const skills = [
+        "Business Development", "Sales Operations", "Customer Success",
+        "Account Management", "Technical Product Sales", "CRM Usage", "Client Engagement"
+      ];
+
+      const downloadReady = computed(function () {
+        return !!selectedRole.value && companyName.value.trim().length > 0;
+      });
+
+      function showToast(msg) {
+        toast.value = msg;
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.value = ""; }, 2500);
+      }
+
+      function trackEvent(event) {
+        stats[event] = (stats[event] || 0) + 1;
+        saveLocalStats(stats);
+        sendRemote(event);
+      }
+
+      function sendRemote(event) {
+        if (!config.analyticsEndpoint) return;
+        try {
+          fetch(config.analyticsEndpoint, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ event: event })
+          }).catch(function () {});
+        } catch (e) {}
+      }
+
+      function answer(choice) {
+        trackEvent(choice);
+        screen.value = choice === "yes" ? "main" : "no";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      async function shareLink() {
+        const url = window.location.href;
+        if (navigator.share) {
+          try { await navigator.share({ title: document.title, url: url }); }
+          catch (e) {}
+        } else {
+          try {
+            await navigator.clipboard.writeText(url);
+            showToast("Link copied! / تم نسخ الرابط!");
+          } catch (e) {
+            showToast("Could not copy link");
+          }
+        }
+      }
+
+      function downloadResume() {
+        if (!downloadReady.value) return;
+        const roleMap = {
+          marketing: { file: config.resumeFiles.marketing, event: "resume_marketing" },
+          sales: { file: config.resumeFiles.sales, event: "resume_sales" },
+          events: { file: config.resumeFiles.events, event: "resume_events" }
+        };
+        const chosen = roleMap[selectedRole.value];
+        trackEvent(chosen.event);
+
+        const a = document.createElement("a");
+        a.href = chosen.file;
+        a.download = "Ibrahim-AbuShameh-Resume-" + selectedRole.value + ".pdf";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        showToast("Thanks! Your download should begin shortly.");
+        companyName.value = ""; // never stored — cleared immediately after use
+      }
+
+      // ---------- owner stats ----------
+      const statsOpen = ref(false);
+      const statsSource = ref("local");
+      let footerClicks = 0;
+      let footerTimer = null;
+
+      function footerClick() {
+        footerClicks++;
+        clearTimeout(footerTimer);
+        footerTimer = setTimeout(function () { footerClicks = 0; }, 1200);
+        if (footerClicks >= 3) {
+          footerClicks = 0;
+          openStats();
+        }
+      }
+
+      async function openStats() {
+        const pin = window.prompt("Enter owner PIN:");
+        if (pin === null) return;
+        if (pin !== config.ownerPin) {
+          window.alert("Incorrect PIN.");
+          return;
+        }
+        await refreshStats();
+        statsOpen.value = true;
+      }
+
+      async function refreshStats() {
+        let fresh = loadLocalStats();
+        let source = "local";
+        if (config.analyticsEndpoint) {
+          try {
+            const res = await fetch(config.analyticsEndpoint + "?action=stats");
+            if (res.ok) {
+              const remote = await res.json();
+              fresh = Object.assign(defaultStats(), remote);
+              source = "remote";
+            }
+          } catch (e) { /* fall back to local silently */ }
+        }
+        Object.assign(stats, fresh);
+        statsSource.value = source;
+      }
+
+      const statRows = computed(function () {
+        const total = stats.visits || 0;
+        const rows = [
+          { label: "Answered NO", count: stats.no || 0 },
+          { label: "Marketing Resume", count: stats.resume_marketing || 0 },
+          { label: "Sales Support Resume", count: stats.resume_sales || 0 },
+          { label: "Events Management Resume", count: stats.resume_events || 0 }
+        ];
+        return rows.map(function (r) {
+          return { label: r.label, count: r.count, pct: total > 0 ? ((r.count / total) * 100).toFixed(1) : "0.0" };
+        });
+      });
+
+      function exportStats() {
+        const payload = { exportedAt: new Date().toISOString(), stats: JSON.parse(JSON.stringify(stats)) };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "owner-stats-" + Date.now() + ".json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function resetStats() {
+        if (!window.confirm("Reset LOCAL analytics counters on this device? Shared site-wide counts are not affected.")) return;
+        Object.assign(stats, defaultStats());
+        saveLocalStats(stats);
+      }
+
+      // ---------- init ----------
+      trackEvent("visits");
+
+      return {
+        config, screen, toast, stats, selectedRole, companyName,
+        roleOptions, focusAreas, skills, downloadReady,
+        answer, shareLink, downloadResume, footerClick,
+        statsOpen, statsSource, statRows, exportStats, resetStats
+      };
+    }
+  }).mount("#app");
+})();
+</script>
+</body>
+</html>
