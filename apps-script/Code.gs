@@ -172,7 +172,7 @@ function updateContent(data) {
   if (!secret) {
     return { ok: false, error: "Server has no ADMIN_SECRET configured yet \u2014 set it in Project Settings > Script Properties." };
   }
-  if (data.secret !== secret) {
+  if (String(data.secret || "").trim() !== String(secret).trim()) {
     return { ok: false, error: "unauthorized" };
   }
   if (!data.content) {

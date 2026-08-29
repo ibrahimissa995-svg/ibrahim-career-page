@@ -36,8 +36,9 @@
       <p class="text-sm text-gray-500 mt-1">Enter the admin secret to load and edit the live page content.</p>
 
       <label class="block text-xs font-semibold text-gray-500 mt-5 mb-1">Admin secret</label>
-      <input v-model="secret" type="password" placeholder="Your ADMIN_SECRET"
-             class="w-full rounded-xl border-2 border-gray-200 px-3.5 py-2.5 text-sm" @keyup.enter="unlock" />
+      <input v-model="secret" type="text" placeholder="Your ADMIN_SECRET"
+             class="w-full rounded-xl border-2 border-gray-200 px-3.5 py-2.5 text-sm font-mono" @keyup.enter="unlock" />
+      <p class="text-[11px] text-gray-400 mt-1">{{ secret.length }} character{{ secret.length === 1 ? '' : 's' }} typed — compare this to the length of what you set in Script Properties.</p>
 
       <button @click="unlock" :disabled="loading"
               class="mt-4 w-full rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 transition text-white py-2.5 font-semibold text-sm">
@@ -306,7 +307,7 @@
             headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify({
               action: "updateContent",
-              secret: secret.value,
+              secret: secret.value.trim(),
               content: JSON.parse(JSON.stringify(content))
             })
           });
